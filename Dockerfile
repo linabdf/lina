@@ -1,11 +1,7 @@
-# Utilise Nginx comme serveur web
 FROM nginx:stable-alpine
-
-# Copie ton index.html dans le dossier servi par Nginx
 COPY lina.html /usr/share/nginx/html/index.html
-
-# Expose le port 80
+COPY favicon.ico /usr/share/nginx/html/favicon.ico
+COPY css/ /usr/share/nginx/html/css/
+COPY js/ /usr/share/nginx/html/js/
 EXPOSE 80
-
-# Lancement de Nginx au premier plan
 CMD ["nginx", "-g", "daemon off;"]
