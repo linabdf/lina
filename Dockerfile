@@ -2,7 +2,7 @@
 FROM nginx:stable-alpine
 
 # Copie ton index.html dans le dossier servi par Nginx
-COPY index.html /usr/share/nginx/html/index.html
+COPY index.html /usr/share/nginx/html/lina.html
 
 # Expose le port 80
 EXPOSE 80
