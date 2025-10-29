@@ -11,7 +11,8 @@ CORS(app)
 def index():
     # Cherche le fichier 'lina.html' dans le sous-dossier 'static'
     # ATTENTION: Assurez-vous que lina.html est bien dans le dossier 'static/'
-    return send_from_directory('static', 'lina.html')
+    return send_from_directory('.', 'lina.html')
+
 
 
 # --- ROUTE 2 : API d'interaction ---
