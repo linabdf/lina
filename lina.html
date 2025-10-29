@@ -1,12 +1,61 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Mon site HTML</title>
+    <meta charset="UTF-8">
+    <title>Interface Simple</title>
 </head>
 <body>
 
-  <h1>ghiles je t'aime  mon coeur!</h1>
+<h1>Mon Interface Frontend/Backend Simple</h1>
+
+<input type="text" id="champTexte" placeholder="Entrez un message ici...">
+<button onclick="envoyerAuBackend()">Envoyer au Backend</button>
+
+<p id="messageStatut">Statut : Prêt à interagir.</p>
+
+<script>
+    // L'adresse de votre Backend
+    // ATTENTION : Pour Render, vous devrez utiliser l'URL publique de votre service Backend.
+    // Pour l'instant, on utilise l'adresse locale par défaut pour le développement :
+    const BACKEND_URL = 'http://127.0.0.1:5000/api/interagir';
+
+    async function envoyerAuBackend() {
+        const champ = document.getElementById('champTexte');
+        const texte = champ.value;
+        const statut = document.getElementById('messageStatut');
+
+        if (texte.trim() === "") {
+            statut.textContent = "Statut : Veuillez entrer du texte.";
+            return;
+        }
+
+        statut.textContent = "Statut : Envoi en cours...";
+
+        try {
+            const reponse = await fetch(BACKEND_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // Le corps de la requête contient la donnée à envoyer
+                body: JSON.stringify({ texte: texte })
+            });
+
+            const donnees = await reponse.json();
+
+            if (reponse.ok) {
+                statut.textContent = `✅ Réponse du Backend : ${donnees.message} (Traitement: ${donnees.donnee_traitee})`;
+                champ.value = ''; // Effacer le champ après succès
+            } else {
+                statut.textContent = `❌ Erreur Backend : ${donnees.message}`;
+            }
+
+        } catch (erreur) {
+            statut.textContent = `❌ Erreur de Connexion : Le Backend n'est pas accessible. (Vérifiez le port 5000)`;
+            console.error('Erreur:', erreur);
+        }
+    }
+</script>
 
 </body>
 </html>

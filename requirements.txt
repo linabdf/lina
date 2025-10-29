@@ -1,0 +1,7 @@
+
+#le frawork qui nous permet d'utiliser pour creer des api simple
+Flask
+#est un serveur  de production qui  sert a utilise le conteneur Docker pour exécuter l'apllication flask
+gunicorn
+#autorise la requete du front end
+flask-cors
