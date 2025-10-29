@@ -1,32 +1,39 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS # Nécessaire pour autoriser l'interaction depuis lina.html
 
 app = Flask(__name__)
 # Autorise le frontend (lina.html) à envoyer des requêtes au backend.
 CORS(app)
 
-# La route (l'adresse) que le frontend va appeler
+# --- ROUTE 1 : Servir la page d'accueil (Correction de l'erreur 404) ---
+# Lorsque l'utilisateur va sur l'URL principale (/)
+@app.route('/')
+def index():
+    # Cherche le fichier 'lina.html' dans le sous-dossier 'static'
+    # ATTENTION: Assurez-vous que lina.html est bien dans le dossier 'static/'
+    return send_from_directory('static', 'lina.html')
+
+
+# --- ROUTE 2 : API d'interaction ---
 @app.route('/api/interagir', methods=['POST'])
 def interagir():
     # 1. Récupérer la donnée envoyée par le frontend
     data = request.json
     texte_recu = data.get('texte')
 
-    # 2. Logique de traitement (simple vérification pour l'instant)
     if not texte_recu:
-        # Envoie une réponse d'erreur
         return jsonify({"statut": "erreur", "message": "Aucun texte reçu."}), 400
 
-    # 3. Afficher la donnée dans les logs du serveur (votre simulation de traitement)
+    # 2. Logique de traitement (simulation)
     print(f"✅ Donnée reçue du Frontend: {texte_recu}")
 
-    # 4. Répondre au frontend avec un message de succès
+    # 3. Répondre au frontend
     return jsonify({
         "statut": "succes",
-        "message": f"Backend a bien reçu et traité : '{texte_recu}'",
-        "donnee_traitee": texte_recu.upper() # Exemple de traitement simple
+        "message": f"Backend a bien reçu et traité : '{texte_recu}' (Version simple et stable)",
+        "donnee_traitee": texte_recu.upper()
     }), 200
 
-# Le serveur écoute sur le port 5000 par défaut
+# Ce bloc n'est utilisé que pour les tests en local
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
