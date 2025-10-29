@@ -18,4 +18,4 @@ EXPOSE 8080
 
 # Étape 6 : Commande de démarrage (CORRIGÉE)
 # Utilise la variable d'environnement $PORT de Render
-CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "app:app"]
+CMD "gunicorn", "--bind", "0.0.0.0:$PORT", "app:app"
